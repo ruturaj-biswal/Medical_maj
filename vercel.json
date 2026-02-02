@@ -13,9 +13,6 @@
       "source": "/api/(.*)",
       "destination": "/Backend/app.py"
     },
-    {
-      "source": "/(.*)",
-      "destination": "/index.html"
-    }
   ]
 }
+
