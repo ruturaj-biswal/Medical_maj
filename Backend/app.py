@@ -4,7 +4,7 @@ from flask_cors import CORS
 import mysql.connector
 import os
 
-
+app = Flask(__name__)
 CORS(app)
 
 # =====================================================================
@@ -39,45 +39,57 @@ def get_db_connection():
         print("❌ MySQL Connection Error:", e)
         return None
 
-# Initialize database and create tables
-try:
-    db = get_db_connection()
-    if db:
-        cursor = db.cursor(dictionary=True)
-        print("✅ MySQL Connected Successfully")
-        
-        # Create users table
-        cursor.execute("""
-        CREATE TABLE IF NOT EXISTS users (
-            id INT AUTO_INCREMENT PRIMARY KEY,
-            email VARCHAR(255) UNIQUE,
-            password VARCHAR(255)
-        )
-        """)
-        db.commit()
+# Initialize database tables (only run in local development)
+def init_db():
+    """Initialize database tables - call this manually if needed"""
+    try:
+        db = get_db_connection()
+        if db:
+            cursor = db.cursor(dictionary=True)
+            print("✅ MySQL Connected Successfully")
+            
+            # Create users table
+            cursor.execute("""
+            CREATE TABLE IF NOT EXISTS users (
+                id INT AUTO_INCREMENT PRIMARY KEY,
+                email VARCHAR(255) UNIQUE,
+                password VARCHAR(255)
+            )
+            """)
+            db.commit()
 
-        cursor.execute("""
-        CREATE TABLE IF NOT EXISTS password_reset (
-            id INT AUTO_INCREMENT PRIMARY KEY,
-            email VARCHAR(255),
-            otp VARCHAR(10),
-            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-        )
-        """)
-        db.commit()
-        cursor.close()
-        db.close()
-except Exception as e:
-    print("❌ Error initializing database:", e)
-
-from flask import Flask, jsonify, redirect
-
-app = Flask(__name__)
+            cursor.execute("""
+            CREATE TABLE IF NOT EXISTS password_reset (
+                id INT AUTO_INCREMENT PRIMARY KEY,
+                email VARCHAR(255),
+                otp VARCHAR(10),
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            )
+            """)
+            db.commit()
+            cursor.close()
+            db.close()
+            print("✅ Database tables initialized")
+    except Exception as e:
+        print("❌ Error initializing database:", e)
 
 @app.route("/")
-def root():
-    return redirect("/login")
+def home():
+    return jsonify({
+        "status": "ok",
+        "message": "Health.io backend is running 🚀",
+        "endpoints": ["/signup", "/login", "/forgot-password", "/verify-otp", "/reset-password", 
+                     "/book-appointment", "/order-medicine", "/book-checkup", "/book-therapy", "/send-email"]
+    })
 
+@app.route("/init-db")
+def initialize_database():
+    """Endpoint to initialize database tables"""
+    try:
+        init_db()
+        return jsonify({"success": True, "message": "Database initialized"}), 200
+    except Exception as e:
+        return jsonify({"success": False, "error": str(e)}), 500
 
 @app.route("/forgot-password", methods=["POST"])
 def forgot_password():
