@@ -70,12 +70,13 @@ try:
 except Exception as e:
     print("❌ Error initializing database:", e)
 
+from flask import Flask, jsonify, redirect
+
+app = Flask(__name__)
+
 @app.route("/")
-def home():
-    return {
-        "status": "ok",
-        "message": "Health.io backend is running 🚀"
-    }
+def root():
+    return redirect("/api/login")
 
 
 @app.route("/forgot-password", methods=["POST"])
