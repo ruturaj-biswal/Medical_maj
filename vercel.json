@@ -1,18 +1,34 @@
 {
-  "buildCommand": "cd medo-app && npm install && npm run build",
-  "outputDirectory": "medo-app/build",
-  "devCommand": "cd medo-app && npm start",
-  "installCommand": "cd medo-app && npm install && cd ../Backend && pip install -r requirements.txt",
-  "functions": {
-    "Backend/app.py": {
-      "runtime": "python3.9"
-    }
-  },
-  "rewrites": [
+  "version": 2,
+  "builds": [
     {
-      "source": "/api/(.*)",
-      "destination": "/Backend/app.py"
+      "src": "medo-app/package.json",
+      "use": "@vercel/static-build",
+      "config": {
+        "distDir": "build"
+      }
     },
+    {
+      "src": "Backend/app.py",
+      "use": "@vercel/python"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/api/(.*)",
+      "dest": "/Backend/app.py"
+    },
+    {
+      "src": "/static/(.*)",
+      "dest": "/medo-app/build/static/$1"
+    },
+    {
+      "src": "/(.*\\.(js|css|png|jpg|jpeg|gif|svg|ico|json|txt))",
+      "dest": "/medo-app/build/$1"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/medo-app/build/index.html"
+    }
   ]
 }
-
