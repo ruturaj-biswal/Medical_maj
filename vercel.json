@@ -1,0 +1,26 @@
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "medo-app/package.json",
+      "use": "@vercel/static-build",
+      "config": {
+        "distDir": "medo-app/build"
+      }
+    },
+    {
+      "src": "Backend/app.py",
+      "use": "@vercel/python"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/api/(.*)",
+      "dest": "Backend/app.py"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "medo-app/build/$1"
+    }
+  ]
+}

@@ -18,7 +18,7 @@ export default function BuyMedicine() {
 
     // 🔵 SEND ORDER TO BACKEND
     try {
-      await fetch("http://localhost:5000/order-medicine", {
+      await fetch("/api/order-medicine", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

@@ -8,7 +8,7 @@ export default function ForgotPassword() {
 
   const sendOTP = async (e) => {
     e.preventDefault();
-    const res = await fetch("http://localhost:5000/forgot-password", {
+    const res = await fetch("/api/forgot-password", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email }),

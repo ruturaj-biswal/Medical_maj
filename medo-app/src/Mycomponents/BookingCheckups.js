@@ -38,7 +38,7 @@ export default function BookingCheckups() {
     }
     setLoading(true);
     try {
-      const res = await fetch("http://localhost:5000/book-checkup", {
+      const res = await fetch("/api/book-checkup", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(form),

@@ -35,7 +35,7 @@ export default function TherapyBooking() {
     }
     setLoading(true);
     try {
-      const res = await fetch("http://localhost:5000/book-therapy", {
+      const res = await fetch("/api/book-therapy", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(form),
