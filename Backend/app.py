@@ -56,6 +56,14 @@ CREATE TABLE IF NOT EXISTS password_reset (
 """)
 db.commit()
 
+@app.route("/")
+def home():
+    return {
+        "status": "ok",
+        "message": "Health.io backend is running 🚀"
+    }
+
+
 @app.route("/forgot-password", methods=["POST"])
 def forgot_password():
     data = request.json
