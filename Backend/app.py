@@ -76,7 +76,7 @@ app = Flask(__name__)
 
 @app.route("/")
 def root():
-    return redirect("/api/login")
+    return redirect("/login")
 
 
 @app.route("/forgot-password", methods=["POST"])
