@@ -2,18 +2,22 @@
   "version": 2,
   "builds": [
     {
+      "src": "Backend/app.py",
+      "use": "@vercel/python"
+    },
+    {
       "src": "medo-app/package.json",
       "use": "@vercel/static-build",
       "config": {
         "distDir": "build"
       }
-    },
-    {
-      "src": "Backend/app.py",
-      "use": "@vercel/python"
     }
   ],
   "routes": [
+    {
+      "src": "/api",
+      "dest": "/Backend/app.py"
+    },
     {
       "src": "/api/(.*)",
       "dest": "/Backend/app.py"
@@ -23,7 +27,7 @@
       "dest": "/medo-app/build/static/$1"
     },
     {
-      "src": "/(.*\\.(js|css|png|jpg|jpeg|gif|svg|ico|json|txt))",
+      "src": "/(.*\\.(js|css|png|jpg|jpeg|gif|svg|ico|json|txt|map))",
       "dest": "/medo-app/build/$1"
     },
     {
