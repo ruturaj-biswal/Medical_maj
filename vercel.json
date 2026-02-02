@@ -9,7 +9,7 @@
       "src": "medo-app/package.json",
       "use": "@vercel/static-build",
       "config": {
-        "distDir": "build"
+        "distDir": "../medo-app/build"
       }
     }
   ],
