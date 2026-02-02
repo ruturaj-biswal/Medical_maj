@@ -1,38 +1,18 @@
 {
-  "version": 2,
-  "builds": [
-    {
-      "src": "Backend/app.py",
-      "use": "@vercel/python"
-    },
-    {
-      "src": "medo-app/package.json",
-      "use": "@vercel/static-build",
-      "config": {
-        "distDir": "../medo-app/build"
-      }
+  "buildCommand": "cd medo-app && npm install && npm run build",
+  "outputDirectory": "medo-app/build",
+  "devCommand": "cd medo-app && npm start",
+  "framework": null,
+  "functions": {
+    "Backend/app.py": {
+      "runtime": "python3.9"
     }
+  },
+  "rewrites": [
+    { "source": "/api/(.*)", "destination": "/Backend/app.py" },
+    { "source": "/(.*)", "destination": "/medo-app/build/$1" }
   ],
   "routes": [
-    {
-      "src": "/api",
-      "dest": "/Backend/app.py"
-    },
-    {
-      "src": "/api/(.*)",
-      "dest": "/Backend/app.py"
-    },
-    {
-      "src": "/static/(.*)",
-      "dest": "/medo-app/build/static/$1"
-    },
-    {
-      "src": "/(.*\\.(js|css|png|jpg|jpeg|gif|svg|ico|json|txt|map))",
-      "dest": "/medo-app/build/$1"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "/medo-app/build/index.html"
-    }
+    { "src": "/(.*)", "dest": "$1", "status": 200 }
   ]
 }
